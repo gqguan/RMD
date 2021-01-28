@@ -17,13 +17,18 @@ end
 
 % 画出轨迹
 outTab = table(t,y(:,2),y(:,6),'VariableNames',{'time','z','theta'});
-rt = interp1(y(:,2), y(:,6), membrane.H);
-fprintf('颗粒滑出膜面经历的时间为%.3e秒！\n', rt)
-figure('name', '颗粒在膜面滑移的轨迹')
-plot(y(:,6),y(:,2),'ro')
-axis([-membrane.W/2, membrane.W/2, 0, membrane.H])
-xlabel('$\theta R$ (m)', 'interpreter', 'latex')
-ylabel('$z$ (m)', 'interpreter', 'latex')
+if max(y(:,2))>membrane.H
+    rt = interp1(y(:,2), y(:,6), membrane.H);
+    fprintf('颗粒滑出膜面经历的时间为%.3e秒！\n', rt)
+    figure('name', '颗粒在膜面滑移的轨迹')
+    plot(y(:,6),y(:,2),'ro')
+    axis([-membrane.W/2, membrane.W/2, 0, membrane.H])
+    xlabel('$\theta R$ (m)', 'interpreter', 'latex')
+    ylabel('$z$ (m)', 'interpreter', 'latex')
+else
+    fprintf('在考查时间内颗粒未滑出膜面！\n')
+end
+
 
 end
 
