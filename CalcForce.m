@@ -15,7 +15,8 @@ F1 = vanderWaals([H,r,rc,Z0]);
 rho_l = fluid.Density; % 流体密度（kg/m3）
 g = 9.81; % 重力加速度（m/s2） 
 Z = operation.Z0+particle.Position(1); % 流体深度（m）
-Ap = pi*rc^2; % 颗粒在膜面法向投影面积（m2） << 按当量球体计算
+% Ap = pi*rc^2; % 颗粒在膜面法向投影面积（m2） << 按当量球体计算
+Ap = particle.Interface; % << 按正六面体计算
 F2 = staticPressure([rho_l,g,Z,Ap]);
 % 离心力（应与膜面外法向相同）
 rho_c = particle.Density; % 膜面颗粒密度（kg/m3） << 按NaCl固体计算
@@ -78,6 +79,7 @@ end
 % 输出参数
 argout.log = prompt;
 argout.K = K;
+argout.F = [F1,F2,F3,F4,Fc,Fz1]; % 范德华力、流体静压、周向流体曳力、轴向流体曳力、离心力、浮力
 
 end
 
