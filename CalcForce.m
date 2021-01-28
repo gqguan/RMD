@@ -30,7 +30,7 @@ Fn = Fc-F1-F2;
 %% 膜面旋转周方向的力平衡
 % 流体与膜面颗粒相对运动产生的力（方向与膜面旋转方向相反）
 h = 2*rc; % 流固作用特征长度（m） << 初设
-vtheta = R*omega; % 旋转周方向平均流体速度（即线速度，m/s）
+vtheta = particle.Velocity(3)-fluid.Velocity(3); % 旋转周方向平均流体速度（即线速度，m/s）
 mu = fluid.Viscosity; % 流体黏度 << 按水黏度计
 F3 = hydraulicForce([rc,h,vtheta,mu]);
 % 膜面颗粒在周方向的静摩擦力（方向与膜面旋转方向相同）
@@ -38,7 +38,7 @@ Ftheta = F3;
 
 %% 膜面旋转轴方向的力平衡
 % 流体与膜面颗粒相对运动产生的力（方向与流体轴向流动方向相同，假定为坐标系z方向）
-vz = operation.Inlet.Velocity; % 旋转轴平均流体速度（即线速度，m/s）
+vz = particle.Velocity(1)-fluid.Velocity(1); % 旋转轴平均流体速度（即线速度，m/s）
 Fz1 = hydraulicForce([rc,h,vz,mu]);
 % 浮力（颗粒密度大于流体时，方向为坐标轴z的负方向）
 rho_l = fluid.Density; % 流体密度（kg/m3）
