@@ -18,6 +18,7 @@ particle.Mass = particle.Density*particle.Volume; % 质量（kg）
 particle.EqvSize = (particle.Volume/(4/3*pi))^(1/3); % 等体积球体半径（m）
 particle.Interface = particle.Volume^(2/3); % 液固界面积（m2）
 particle.Position = [0,operation.Rotation.Radium,0]; % 坐标(z,r,theta)
+
 % 流体性质
 fluid.Viscosity = 1e-3;
 fluid.Density = 1e3;

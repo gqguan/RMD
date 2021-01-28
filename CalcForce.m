@@ -1,7 +1,7 @@
-function [FC] = CalcForce(operation,particle,fluid,membrane)
+function [FC,argout] = CalcForce(operation,particle,fluid,membrane)
 %CalcForce() 计算颗粒受力情况
 % I/O参数说明
-% 输出：颗粒合力向量FC(z,r,theta)
+% 输出：颗粒合力向量FC(z,r,theta)，结果参数集argout
 % 输入：操作条件（operation）、颗粒性质（particle）、流体性质（fluid）、膜性质（membrane）
 
 %% 膜面旋转法方向的力平衡
@@ -56,20 +56,28 @@ alpha = atan(Ftheta/Fz);
 Fmax = membrane.KS*abs(Fn);
 % 当膜面对颗粒的支撑力为正值时，颗粒在法方向受离心力作用而脱离膜面
 if Fn>0
-    fprintf('颗粒在离心力作用下脱离膜面！\n')
+    prompt = sprintf('颗粒在离心力作用下脱离膜面！');
+    K = nan;
+else
+    % 维持颗粒相对膜面静止所需的静摩擦力系数
+    K = Fmag/abs(Fn);
 end
 % 当摩擦力小于最大静摩擦力时颗粒在旋转膜面保持相对静止，膜面与颗粒接触面的静摩擦力系数
 if Fmag<Fmax
-    fprintf('维持颗粒静止！\n')
+    prompt = sprintf('维持颗粒静止！');
     FC = [0,0,0];
 else
-    fprintf('颗粒在膜面运动！\n')
+    prompt = sprintf('颗粒在膜面运动，当前在膜面位置(%.4f,%.4f)！', particle.Position(3), particle.Position(1));
     % 合力 = 动摩擦力
     FCmag = Fmag-membrane.KM*abs(Fn);
     FC(1) = FCmag*sqrt(1/(1+tan(alpha)));
     FC(2) = 0;
     FC(3) = FC(1)*tan(alpha);
 end
+
+% 输出参数
+argout.log = prompt;
+argout.K = K;
 
 end
 
