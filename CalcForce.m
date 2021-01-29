@@ -61,8 +61,18 @@ alpha = atan(Ftheta/Fz);
 K = Fmag/abs(Fn);
 switch opString
     case('stationary')
-        FC = [Fz,0,Ftheta];
-        prompt = sprintf('颗粒维持相对膜面静止时所受的摩擦力为FC[%.4e %.4e %.4e]',FC);
+        % 当膜面对颗粒的支撑力为正值时，颗粒在法方向受离心力作用而脱离膜面
+        if Fn>0
+            K = nan;
+            % 颗粒向膜面法方向运动
+            FC(1) = Fz; % 轴向摩擦力为0
+            FC(2) = Fn; % 法向合力
+            FC(3) = Ftheta; % 周向摩擦力为0
+            prompt = sprintf('颗粒在离心力作用下脱离膜面，所受合力为FC[%.4e %.4e %.4e]',FC);
+        else        
+            FC = [Fz,0,Ftheta];
+            prompt = sprintf('颗粒维持相对膜面静止时所受的摩擦力为FC[%.4e %.4e %.4e]',FC);
+        end
     case('dynamic') % 颗粒在膜面所受的实际摩擦力
         % 最大静摩擦力
         Fmax = membrane.KS*abs(Fn);
@@ -96,7 +106,7 @@ end
 % 输出参数
 argout.log = prompt;
 argout.K = K;
-argout.F = [F1,F2,F3,F4,Fc,Fz1]; % 范德华力、流体静压、周向流体曳力、轴向流体曳力、离心力、浮力
+argout.F = [F1,F2,F3,F4,Fc,Fz1]; % 范德华力、流体静压、周向流体曳力、浮力、离心力、轴向流体曳力
 
 end
 

@@ -18,7 +18,7 @@ particle.Mass = particle.Density*particle.Volume; % 质量（kg）
 particle.EqvSize = (particle.Volume/(4/3*pi))^(1/3); % 等体积球体半径（m）
 particle.Interface = particle.Volume^(2/3); % 液固界面积（m2）
 particle.Position = [0,operation.Rotation.Radium,0]; % 坐标(z,r,theta)
-particle.Velocity = [0,0,operation.Rotation.AngularVelocity*operation.Rotation.Radium]; % 颗粒初始附着于膜面，随膜面旋转（正方向为右手系）
+[particle,operation] = InitParticle(operation,particle); % 颗粒初始附着于膜面，随膜面旋转（正方向为右手系）
 % 流体性质
 fluid.Viscosity = 1e-3;
 fluid.Density = 1e3;
@@ -31,23 +31,23 @@ membrane.H = 40e-3; % 膜面尺寸H
 membrane.W = 2*pi*operation.Rotation.Radium; % 膜面尺寸W
 
 %% 考查不同转速下静摩擦力系数与颗粒尺寸的关系
-% % 颗粒尺寸范围，按正六面体颗粒的边长计算
-% edgeLengths = 10.^linspace(-7,-3);
-% % 转速范围
-% speeds = 10.^(1:3);
-% % 分别计算各转速下维持颗粒相对膜面静止时，摩擦力系数与颗粒尺寸的关系
-% argout1 = effect_RPM_K(speeds, edgeLengths, operation, particle, fluid, membrane);
+% 颗粒尺寸范围，按正六面体颗粒的边长计算
+edgeLengths = 10.^linspace(-7,-3);
+% 转速范围
+speeds = 10.^(1:3);
+% 分别计算各转速下维持颗粒相对膜面静止时，摩擦力系数与颗粒尺寸的关系
+argout1 = effect_RPM_K(speeds, edgeLengths, operation, particle, fluid, membrane);
 
 %% 计算颗粒运动
-% 转速范围
-speeds = 10.^(1:4);
-% 考查时间跨度
-tspan = [0,1.0];
-for i = 1:length(speeds)
-    operation.Rotation.Speed = speeds(i);
-    particle = InitParticle(operation,particle);
-    [particles,outTab] = Trajectory(tspan,operation,particle,fluid,membrane);
-end
+% % 转速范围
+% speeds = 10.^(1:4);
+% % 考查时间跨度
+% tspan = [0,1.0];
+% for i = 1:length(speeds)
+%     operation.Rotation.Speed = speeds(i);
+%     particle = InitParticle(operation,particle);
+%     [particles,outTab] = Trajectory(tspan,operation,particle,fluid,membrane);
+% end
 
 %% 输出
 
