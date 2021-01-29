@@ -4,6 +4,9 @@ y0 = zeros(6,1); % z方向速度、z方向位置、r方向速度、r方向位置、theta方向速度、th
 y0(2) = particle.Position(1);
 y0(4) = particle.Position(2);
 y0(6) = particle.Position(3);
+y0(1) = particle.Velocity(1);
+y0(3) = particle.Velocity(2);
+y0(5) = particle.Velocity(3);
 [t,y] = ode45(@(t,y) motionEq(t,y,operation,particle,fluid,membrane), tspan, y0);
 % 输出颗粒轨迹
 particles = struct;

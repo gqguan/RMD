@@ -39,8 +39,15 @@ membrane.W = 2*pi*operation.Rotation.Radium; % 膜面尺寸W
 % argout1 = effect_RPM_K(speeds, edgeLengths, operation, particle, fluid, membrane);
 
 %% 计算颗粒运动
+% 转速范围
+speeds = 10.^(1:4);
+% 考查时间跨度
 tspan = [0,1.0];
-[particles,outTab] = Trajectory(tspan,operation,particle,fluid,membrane);
+for i = 1:length(speeds)
+    operation.Rotation.Speed = speeds(i);
+    particle = InitParticle(operation,particle);
+    [particles,outTab] = Trajectory(tspan,operation,particle,fluid,membrane);
+end
 
 %% 输出
 
