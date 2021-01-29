@@ -30,9 +30,19 @@ membrane.KM = 1e-5; % 动摩擦力系数
 membrane.H = 40e-3; % 膜面尺寸H
 membrane.W = 2*pi*operation.Rotation.Radium; % 膜面尺寸W
 
-%% 考查不同颗粒尺寸的静摩擦力系数
-edgeLengths = 10.^linspace(-7,-3); % 正六面体颗粒的边长
-CalcK(edgeLengths, operation, particle, fluid, membrane);
+%% 考查不同转速下静摩擦力系数与颗粒尺寸的关系
+% 颗粒尺寸范围，按正六面体颗粒的边长计算
+edgeLengths = 10.^linspace(-7,-4);
+% 转速范围
+speeds = 10.^(1:1:2);
+for i = 1:length(speeds)
+    operation.Rotation.Speed = speeds(i);
+    operation.Rotation.AngularVelocity = operation.Rotation.Speed/2/pi/60;
+    plotName = sprintf('%drpm',speeds(i));
+    % 计算不同颗粒尺寸的静摩擦力系数
+    CalcK(edgeLengths, operation, particle, fluid, membrane, plotName);
+end
+hold off
 
 %% 计算颗粒运动
 % tspan = [0,1.0];
