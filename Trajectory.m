@@ -1,4 +1,4 @@
-function particles = Trajectory(tspan,operation,particle,fluid,membrane)
+function [particles,outTab] = Trajectory(tspan,operation,particle,fluid,membrane)
 
 y0 = zeros(6,1); % z方向速度、z方向位置、r方向速度、r方向位置、theta方向速度、theta方向位置
 y0(2) = particle.Position(1);
@@ -18,7 +18,7 @@ end
 % 画出轨迹
 outTab = table(t,y(:,2),y(:,6),'VariableNames',{'time','z','theta'});
 if max(y(:,2))>membrane.H
-    rt = interp1(y(:,2), y(:,6), membrane.H);
+    rt = interp1(y(:,2), t, membrane.H);
     fprintf('颗粒滑出膜面经历的时间为%.3e秒！\n', rt)
     figure('name', '颗粒在膜面滑移的轨迹')
     plot(y(:,6),y(:,2),'ro')

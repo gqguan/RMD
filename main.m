@@ -31,16 +31,16 @@ membrane.H = 40e-3; % 膜面尺寸H
 membrane.W = 2*pi*operation.Rotation.Radium; % 膜面尺寸W
 
 %% 考查不同转速下静摩擦力系数与颗粒尺寸的关系
-% 颗粒尺寸范围，按正六面体颗粒的边长计算
-edgeLengths = 10.^linspace(-7,-3);
-% 转速范围
-speeds = 10.^(1:3);
-% 分别计算各转速下维持颗粒相对膜面静止时，摩擦力系数与颗粒尺寸的关系
-argout = effect_RPM_K(speeds, edgeLengths, operation, particle, fluid, membrane);
+% % 颗粒尺寸范围，按正六面体颗粒的边长计算
+% edgeLengths = 10.^linspace(-7,-3);
+% % 转速范围
+% speeds = 10.^(1:3);
+% % 分别计算各转速下维持颗粒相对膜面静止时，摩擦力系数与颗粒尺寸的关系
+% argout1 = effect_RPM_K(speeds, edgeLengths, operation, particle, fluid, membrane);
 
 %% 计算颗粒运动
-% tspan = [0,1.0];
-% particles = Trajectory(tspan,operation,particle,fluid,membrane);
+tspan = [0,1.0];
+[particles,outTab] = Trajectory(tspan,operation,particle,fluid,membrane);
 
 %% 输出
 
