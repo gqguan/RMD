@@ -32,7 +32,7 @@ membrane.W = 2*pi*operation.Rotation.Radium; % 膜面尺寸W
 
 %% 考查不同转速下静摩擦力系数与颗粒尺寸的关系
 % 颗粒尺寸范围，按正六面体颗粒的边长计算
-edgeLengths = 10.^linspace(-7,-4);
+edgeLengths = 10.^linspace(-7,-3);
 % 转速范围
 speeds = 10.^[1:3];
 Kout = zeros(length(speeds),length(edgeLengths));

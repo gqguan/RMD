@@ -13,6 +13,7 @@ K = [argout.K];
 plot(edgeLengths,[argout.K],'DisplayName',plotName)
 xlabel('$L$ (m)','interpreter','latex');
 ylabel('$K$ (dimensionless)','interpreter','latex');
+legend boxoff;
 hold on
 
 function argout = setParticleSize(L)
