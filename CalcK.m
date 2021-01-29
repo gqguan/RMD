@@ -1,4 +1,4 @@
-function argout = CalcK(edgeLengths,operation,particle,fluid,membrane,plotName)
+function K = CalcK(edgeLengths,operation,particle,fluid,membrane,plotName)
 %% 检查输入参数
 if ~exist('plotName','var')
     plotName = 'Unnamed';
@@ -7,6 +7,7 @@ end
 % edgeLengths = 10.^linspace(-7,-3); % 正六面体颗粒的边长
 % edgeLengths = 100e-6;
 argout = arrayfun(@(x) setParticleSize(x), edgeLengths);
+K = [argout.K];
 % 绘图输出
 % figure('name', '不同颗粒尺寸的静摩擦力系数')
 plot(edgeLengths,[argout.K],'DisplayName',plotName)
