@@ -21,7 +21,9 @@ end
 % 画出轨迹
 outTab = table(t,y(:,2),y(:,6),'VariableNames',{'time','z','theta'});
 if max(y(:,2))>membrane.H
-    rt = interp1(y(:,2), t, membrane.H);
+    % 插值计算要求查询序列为不重复的有理数（重复性要求放宽为不等于0）
+    idx = (y(:,2) ~= 0 & ~isnan(y(:,2)) & ~isinf(y(:,2))); 
+    rt = interp1(y(idx,2), t(idx), membrane.H);
     fprintf('颗粒滑出膜面经历的时间为%.3e秒！\n', rt)
     figure('name', '颗粒在膜面滑移的轨迹')
     plot(y(:,6),y(:,2),'ro')

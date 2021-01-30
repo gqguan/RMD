@@ -13,7 +13,7 @@ operation.Z0 = 5e-2;
 % 颗粒性质
 particle.Form = '立方体';
 particle.Density = 2.165e3; % 密度（kg/m3）
-particle.Volume = 1e-6; % 体积（m3）
+particle.Volume = (10e-6)^3; % 体积（m3）
 particle.Mass = particle.Density*particle.Volume; % 质量（kg）
 particle.EqvSize = (particle.Volume/(4/3*pi))^(1/3); % 等体积球体半径（m）
 particle.Interface = particle.Volume^(2/3); % 液固界面积（m2）
@@ -41,15 +41,15 @@ speeds = 10.^(1:4);
 argout1 = effect_RPM_K(speeds, edgeLengths, operation, particle, fluid, membrane);
 
 %% 计算颗粒运动
-% % 转速范围
-% speeds = 10.^(1:4);
-% % 考查时间跨度
-% tspan = [0,1.0];
-% for i = 1:length(speeds)
-%     operation.Rotation.Speed = speeds(i);
-%     particle = InitParticle(operation,particle);
-%     [particles,outTab] = Trajectory(tspan,operation,particle,fluid,membrane);
-% end
+% 转速范围
+speeds = 10.^(1:4);
+% 考查时间跨度
+tspan = [0,1.0];
+for i = 1:length(speeds)
+    operation.Rotation.Speed = speeds(i);
+    particle = InitParticle(operation,particle);
+    [particles,outTab] = Trajectory(tspan,operation,particle,fluid,membrane);
+end
 
 %% 输出
 
