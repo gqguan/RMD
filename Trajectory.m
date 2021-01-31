@@ -1,5 +1,6 @@
 function [particles,outTab] = Trajectory(tspan,operation,particle,fluid,membrane)
-
+global COMVars
+COMVars.colorID = COMVars.colorID+1;
 y0 = zeros(6,1); % z方向速度、z方向位置、r方向速度、r方向位置、theta方向速度、theta方向位置
 y0(2) = particle.Position(1);
 y0(4) = particle.Position(2);
@@ -17,22 +18,31 @@ for i = 1:length(t)
     particles(i).Spec = particle;
 end
 
-% 画出轨迹
+% 列表输出结果
 outTab = table(t,y(:,2),y(:,4),y(:,6),'VariableNames',{'time','Xz','Xr','Xtheta'});
 outTab = [outTab,table(y(:,1),y(:,3),y(:,5),'VariableNames',{'Vz','Vr','Vtheta'})];
+% 计算当前考查时间内颗粒是否脱离膜面并进而插值计算的脱离时间
 if max(y(:,2))>membrane.H
     % 插值计算要求查询序列为不重复的有理数（重复性要求放宽为不等于0）
     idx = (y(:,2) ~= 0 & ~isnan(y(:,2)) & ~isinf(y(:,2))); 
     rt = interp1(y(idx,2), t(idx), membrane.H);
-    fprintf('颗粒滑出膜面经历的时间为%.3e秒！\n', rt)
+    fprintf('转速为%dRPM时颗粒滑出膜面经历的时间为%.3e秒！\n', operation.Rotation.Speed, rt)
 else
-    fprintf('在考查时间内颗粒未滑出膜面！\n')
+    fprintf('转速为%dRPM时在考查时间内颗粒未滑出膜面！\n', operation.Rotation.Speed)
 end
-figure('name', '颗粒在膜面滑移的轨迹')
-plot(y(:,6),y(:,2),'ro')
+% 画出轨迹
+if isempty(findobj('Name','颗粒在膜面滑移的轨迹')) 
+    figure('name', '颗粒在膜面滑移的轨迹');
+else
+    figure(1);
+end
+plotName = sprintf('%dRPM',operation.Rotation.Speed);
+plot(y(:,6),y(:,2),'ro','DisplayName',plotName,'Color',COMVars.colors(COMVars.colorID,:))
 axis([-membrane.W/2, membrane.W/2, 0, membrane.H])
 xlabel('$\theta R$ (m)', 'interpreter', 'latex')
 ylabel('$z$ (m)', 'interpreter', 'latex')
+hold on
+legend;
 
 % 颗粒沿程受力变化
 FCs = arrayfun(@(x)CalcForce(operation,x,fluid,membrane),[particles.Spec],'UniformOutput',false);
@@ -43,19 +53,21 @@ Ftheta = cellfun(@(x)x(3),FCs);
 % 列表输出
 outTab = [outTab,table(Fz,Fr,Ftheta)];
 % 绘图输出
-figure('name', '颗粒在膜面滑移时受力情况')
+figName = sprintf('转速为%dRPM时颗粒在膜面滑移的受力情况',operation.Rotation.Speed);
+figure('name', figName);
 subplot(3,1,1)
-plot([particles.Time],Fz,'o')
+plot([particles.Time],Fz,'Color',COMVars.colors(COMVars.colorID,:))
 xlabel('$t$ (s)','interpreter','latex')
 ylabel('$F_z$ (N)','interpreter','latex')
 subplot(3,1,2)
-plot([particles.Time],Fr,'o')
+plot([particles.Time],Fr,'Color',COMVars.colors(COMVars.colorID,:))
 xlabel('$t$ (s)','interpreter','latex')
 ylabel('$F_r$ (N)','interpreter','latex')
 subplot(3,1,3)
-plot([particles.Time],Ftheta,'o')
+plot([particles.Time],Ftheta,'Color',COMVars.colors(COMVars.colorID,:))
 xlabel('$t$ (s)','interpreter','latex')
 ylabel('$F_{\theta}$ (N)','interpreter','latex')
+
 end
 
 function dy = motionEq(t,y,operation,particle,fluid,membrane)

@@ -4,6 +4,8 @@
 
 %% 初始化
 clear
+global COMVars
+COMVars.colorID = 0;
 % 操作条件
 operation.Rotation.Radium = 10e-3; % 转筒半径（m）
 operation.Rotation.Speed = 50; % 转速（rpm）
@@ -42,9 +44,10 @@ membrane.W = 2*pi*operation.Rotation.Radium; % 膜面尺寸W
 
 %% 计算颗粒运动
 % 转速范围
-speeds = 10.^(3);
+speeds = 10.^(1:4);
+COMVars.colors = hsv(length(speeds));
 % 考查时间跨度
-tspan = [0,100.0];
+tspan = [0,1200.0];
 for i = 1:length(speeds)
     operation.Rotation.Speed = speeds(i);
     particle = InitParticle(operation,particle);
