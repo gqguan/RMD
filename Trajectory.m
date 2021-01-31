@@ -12,8 +12,8 @@ y0(5) = particle.Velocity(3);
 particles = struct;
 for i = 1:length(t)
     particles(i).Time = t(i);
-    particle.Position = [y(2),y(4),y(6)];
-    particle.Velocity = [y(1),y(3),y(5)];
+    particle.Position = [y(i,2),y(i,4),y(i,6)];
+    particle.Velocity = [y(i,1),y(i,3),y(i,5)];
     particles(i).Spec = particle;
 end
 
