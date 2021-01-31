@@ -31,20 +31,20 @@ membrane.H = 40e-3; % 膜面尺寸H
 membrane.W = 2*pi*operation.Rotation.Radium; % 膜面尺寸W
 
 %% 考查不同转速下静摩擦力系数与颗粒尺寸的关系
-% 颗粒尺寸范围，按正六面体颗粒的边长计算
-edgeLengths = 10.^linspace(-7,-2);
-% 计算考查尺寸范围内颗粒从膜面离心脱离的临界转速
-RPMs = CalcRPM(edgeLengths, operation, particle, fluid, membrane);
-% 转速范围
-speeds = 10.^(1:4);
-% 分别计算各转速下维持颗粒相对膜面静止时，摩擦力系数与颗粒尺寸的关系
-argout1 = effect_RPM_K(speeds, edgeLengths, operation, particle, fluid, membrane);
+% % 颗粒尺寸范围，按正六面体颗粒的边长计算
+% edgeLengths = 10.^linspace(-7,-2);
+% % 计算考查尺寸范围内颗粒从膜面离心脱离的临界转速
+% RPMs = CalcRPM(edgeLengths, operation, particle, fluid, membrane);
+% % 转速范围
+% speeds = 10.^(1:4);
+% % 分别计算各转速下维持颗粒相对膜面静止时，摩擦力系数与颗粒尺寸的关系
+% argout1 = effect_RPM_K(speeds, edgeLengths, operation, particle, fluid, membrane);
 
 %% 计算颗粒运动
 % 转速范围
-speeds = 10.^(1:4);
+speeds = 10.^(3);
 % 考查时间跨度
-tspan = [0,1.0];
+tspan = [0,100.0];
 for i = 1:length(speeds)
     operation.Rotation.Speed = speeds(i);
     particle = InitParticle(operation,particle);

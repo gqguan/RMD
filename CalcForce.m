@@ -39,7 +39,7 @@ vtheta = particle.Velocity(3)-fluid.Velocity(3); % Ğı×ªÖÜ·½ÏòÆ½¾ùÁ÷ÌåËÙ¶È£¨¼´ÏßË
 mu = fluid.Viscosity; % Á÷Ìåğ¤¶È << °´Ë®ğ¤¶È¼Æ
 F3 = hydraulicForce([rc,h,vtheta,mu]);
 % Ä¤Ãæ¿ÅÁ£ÔÚÖÜ·½ÏòµÄ¾²Ä¦²ÁÁ¦£¨·½ÏòÓëÄ¤ÃæĞı×ª·½ÏòÏàÍ¬£©
-Ftheta = F3;
+Ftheta = -F3;
 
 %% Ä¤ÃæĞı×ªÖá·½ÏòµÄÁ¦Æ½ºâ
 % Á÷ÌåÓëÄ¤Ãæ¿ÅÁ£Ïà¶ÔÔË¶¯²úÉúµÄÁ¦£¨·½ÏòÓëÁ÷ÌåÖáÏòÁ÷¶¯·½ÏòÏàÍ¬£¬¼Ù¶¨Îª×ø±êÏµz·½Ïò£©
@@ -51,7 +51,7 @@ rho_c = particle.Density; % ¿ÅÁ£ÃÜ¶È£¨kg/m3£©
 V = particle.Volume; % ¿ÅÁ£Ìå»ı£¨m3£©
 F4 = buoyancy([rho_l,rho_c,g,V]);
 % Ä¤Ãæ¿ÅÁ£ÔÚÖáÏòµÄ¾²Ä¦²ÁÁ¦£¨Õı·½ÏòÎª×ø±êÖáz·½Ïò£©
-Fz = Fz1-F4;
+Fz = -Fz1-F4;
 
 %% ¸ù¾İ³ÌĞò¼ÆËãÉè¶¨×Ö¶Î·Ö±ğ¼ÆËã
 % ¿ÅÁ£ÔÚÄ¤ÃæÇĞ·½ÏòÊÜµÄºÏÁ¦´óĞ¡¼°·½Ïò
@@ -93,9 +93,9 @@ switch opString
             else
                 % ºÏÁ¦ = ¶¯Ä¦²ÁÁ¦
                 FCmag = Fmag-membrane.KM*abs(Fn);
-                FC(1) = FCmag*sqrt(1/(1+tan(alpha)));
+                FC(1) = FCmag*cos(alpha);
                 FC(2) = 0;
-                FC(3) = FC(1)*tan(alpha);
+                FC(3) = FCmag*sin(alpha);
                 prompt = sprintf('¿ÅÁ£ÔÚÄ¤ÃæËùÊÜµÄÊµ¼ÊÄ¦²ÁÁ¦Îª%.4eN²»Ğ¡ÓÚ×î´ó¾²Ä¦²ÁÁ¦%.4eN£º', Fmag, Fmax);
                 prompt = sprintf('%s¿ÅÁ£ÔÚÄ¤ÃæËùÊÜµÄÁ¦ÎªFC[%.4e %.4e %.4e]',prompt,FC);
                 prompt = sprintf('%s£¬¿ÅÁ£ÔÚÄ¤ÃæÔË¶¯£¬µ±Ç°ÔÚÄ¤ÃæÎ»ÖÃ(%.4f,%.4f)£¡', prompt, particle.Position(3), particle.Position(1));
