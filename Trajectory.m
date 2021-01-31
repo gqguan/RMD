@@ -39,9 +39,9 @@ end
 
 function dy = motionEq(t,y,operation,particle,fluid,membrane)
     % 更新颗粒位置
-    particle.Position = [y(1),y(3),y(5)];
+    particle.Position = [y(2),y(4),y(6)];
     % 更新颗粒速度
-    particle.Velocity = [y(2),y(4),y(6)];
+    particle.Velocity = [y(1),y(3),y(5)];
     % 计算颗粒受力
     force = CalcForce(operation,particle,fluid,membrane);
     m = particle.Mass;
