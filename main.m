@@ -43,14 +43,22 @@ membrane.W = 2*pi*operation.Rotation.Radium; % 膜面尺寸W
 % argout1 = effect_RPM_K(speeds, edgeLengths, operation, particle, fluid, membrane);
 
 %% 计算颗粒运动
-% 转速范围
-speeds = 10.^(1:4);
-COMVars.colors = hsv(length(speeds));
+% % 转速范围
+% speeds = 10.^(1:4);
+% COMVars.colors = hsv(length(speeds));
 % 考查时间跨度
 tspan = [0,1200.0];
-for i = 1:length(speeds)
-    operation.Rotation.Speed = speeds(i);
-    particle = InitParticle(operation,particle);
+% for i = 1:length(speeds)
+%     operation.Rotation.Speed = speeds(i);
+%     particle = InitParticle(operation,particle);
+%     [particles,outTab] = Trajectory(tspan,operation,particle,fluid,membrane);
+% end
+
+% 初始位置
+pos = membrane.H/4*(0:3);
+COMVars.colors = hsv(length(pos));
+for i = 1:length(pos)
+    particle.Position(1) = pos(i);
     [particles,outTab] = Trajectory(tspan,operation,particle,fluid,membrane);
 end
 
