@@ -1,52 +1,52 @@
-%% Ğı×ªÄ¤Ãæ±íÃæ¿ÅÁ£µÄÊÜÁ¦·ÖÎö
+%% æ—‹è½¬è†œé¢è¡¨é¢é¢—ç²’çš„å—åŠ›åˆ†æ
 %
 % by Dr. Guoqiang Guan @ SCUT on 2021-1-13
 
-%% ³õÊ¼»¯
+%% åˆå§‹åŒ–
 clear
 global COMVars
 COMVars.colorID = 0;
-% ²Ù×÷Ìõ¼ş
-operation.Rotation.Radium = 10e-3; % ×ªÍ²°ë¾¶£¨m£©
-operation.Rotation.Speed = 50; % ×ªËÙ£¨rpm£©
-operation.Rotation.AngularVelocity = operation.Rotation.Speed/2/pi/60; % ½ÇËÙ¶È£¨rad/s£©
-operation.Inlet.Velocity = 0; % ½øÁÏÁ÷ËÙ£¨¼´z·½ÏòËÙ¶È£¬m/s£©
+% æ“ä½œæ¡ä»¶
+operation.Rotation.Radium = 10e-3; % è½¬ç­’åŠå¾„ï¼ˆmï¼‰
+operation.Rotation.Speed = 50; % è½¬é€Ÿï¼ˆrpmï¼‰
+operation.Rotation.AngularVelocity = operation.Rotation.Speed*2*pi/60; % è§’é€Ÿåº¦ï¼ˆrad/sï¼‰
+operation.Inlet.Velocity = 0; % è¿›æ–™æµé€Ÿï¼ˆå³zæ–¹å‘é€Ÿåº¦ï¼Œm/sï¼‰
 operation.Z0 = 5e-2; 
-% ¿ÅÁ£ĞÔÖÊ
-particle.Form = 'Á¢·½Ìå';
-particle.Density = 2.165e3; % ÃÜ¶È£¨kg/m3£©
-particle.Volume = (10e-6)^3; % Ìå»ı£¨m3£©
-particle.Mass = particle.Density*particle.Volume; % ÖÊÁ¿£¨kg£©
-particle.EqvSize = (particle.Volume/(4/3*pi))^(1/3); % µÈÌå»ıÇòÌå°ë¾¶£¨m£©
-particle.Interface = particle.Volume^(2/3); % Òº¹Ì½çÃæ»ı£¨m2£©
-particle.Position = [0,operation.Rotation.Radium,0]; % ×ø±ê(z,r,theta)
-[particle,operation] = InitParticle(operation,particle); % ¿ÅÁ£³õÊ¼¸½×ÅÓÚÄ¤Ãæ£¬ËæÄ¤ÃæĞı×ª£¨Õı·½ÏòÎªÓÒÊÖÏµ£©
-% Á÷ÌåĞÔÖÊ
+% é¢—ç²’æ€§è´¨
+particle.Form = 'ç«‹æ–¹ä½“';
+particle.Density = 2.165e3; % å¯†åº¦ï¼ˆkg/m3ï¼‰
+particle.Volume = (10e-6)^3; % ä½“ç§¯ï¼ˆm3ï¼‰
+particle.Mass = particle.Density*particle.Volume; % è´¨é‡ï¼ˆkgï¼‰
+particle.EqvSize = (particle.Volume/(4/3*pi))^(1/3); % ç­‰ä½“ç§¯çƒä½“åŠå¾„ï¼ˆmï¼‰
+particle.Interface = particle.Volume^(2/3); % æ¶²å›ºç•Œé¢ç§¯ï¼ˆm2ï¼‰
+particle.Position = [0,operation.Rotation.Radium,0]; % åæ ‡(z,r,theta)
+[particle,operation] = InitParticle(operation,particle); % é¢—ç²’åˆå§‹é™„ç€äºè†œé¢ï¼Œéšè†œé¢æ—‹è½¬ï¼ˆæ­£æ–¹å‘ä¸ºå³æ‰‹ç³»ï¼‰
+% æµä½“æ€§è´¨
 fluid.Viscosity = 1e-3;
 fluid.Density = 1e3;
-fluid.Velocity = [0,0,0]; % Á÷Ìå³õÊ¼Îª¾²Ö¹
-% Ä¤ÃæĞÔÖÊ
+fluid.Velocity = [0,0,0]; % æµä½“åˆå§‹ä¸ºé™æ­¢
+% è†œé¢æ€§è´¨
 membrane.Roughness = 1e-8;
-membrane.KS = 0.2e-3; % ¾²Ä¦²ÁÁ¦ÏµÊı
-membrane.KM = 1e-5; % ¶¯Ä¦²ÁÁ¦ÏµÊı
-membrane.H = 40e-3; % Ä¤Ãæ³ß´çH
-membrane.W = 2*pi*operation.Rotation.Radium; % Ä¤Ãæ³ß´çW
+membrane.KS = 0.2e-3; % é™æ‘©æ“¦åŠ›ç³»æ•°
+membrane.KM = 1e-5; % åŠ¨æ‘©æ“¦åŠ›ç³»æ•°
+membrane.H = 40e-3; % è†œé¢å°ºå¯¸H
+membrane.W = 2*pi*operation.Rotation.Radium; % è†œé¢å°ºå¯¸W
 
-%% ¿¼²é²»Í¬×ªËÙÏÂ¾²Ä¦²ÁÁ¦ÏµÊıÓë¿ÅÁ£³ß´çµÄ¹ØÏµ
-% % ¿ÅÁ£³ß´ç·¶Î§£¬°´ÕıÁùÃæÌå¿ÅÁ£µÄ±ß³¤¼ÆËã
+%% è€ƒæŸ¥ä¸åŒè½¬é€Ÿä¸‹é™æ‘©æ“¦åŠ›ç³»æ•°ä¸é¢—ç²’å°ºå¯¸çš„å…³ç³»
+% % é¢—ç²’å°ºå¯¸èŒƒå›´ï¼ŒæŒ‰æ­£å…­é¢ä½“é¢—ç²’çš„è¾¹é•¿è®¡ç®—
 % edgeLengths = 10.^linspace(-7,-2);
-% % ¼ÆËã¿¼²é³ß´ç·¶Î§ÄÚ¿ÅÁ£´ÓÄ¤ÃæÀëĞÄÍÑÀëµÄÁÙ½ç×ªËÙ
+% % è®¡ç®—è€ƒæŸ¥å°ºå¯¸èŒƒå›´å†…é¢—ç²’ä»è†œé¢ç¦»å¿ƒè„±ç¦»çš„ä¸´ç•Œè½¬é€Ÿ
 % RPMs = CalcRPM(edgeLengths, operation, particle, fluid, membrane);
-% % ×ªËÙ·¶Î§
+% % è½¬é€ŸèŒƒå›´
 % speeds = 10.^(1:4);
-% % ·Ö±ğ¼ÆËã¸÷×ªËÙÏÂÎ¬³Ö¿ÅÁ£Ïà¶ÔÄ¤Ãæ¾²Ö¹Ê±£¬Ä¦²ÁÁ¦ÏµÊıÓë¿ÅÁ£³ß´çµÄ¹ØÏµ
+% % åˆ†åˆ«è®¡ç®—å„è½¬é€Ÿä¸‹ç»´æŒé¢—ç²’ç›¸å¯¹è†œé¢é™æ­¢æ—¶ï¼Œæ‘©æ“¦åŠ›ç³»æ•°ä¸é¢—ç²’å°ºå¯¸çš„å…³ç³»
 % argout1 = effect_RPM_K(speeds, edgeLengths, operation, particle, fluid, membrane);
 
-%% ¼ÆËã¿ÅÁ£ÔË¶¯
-% % ×ªËÙ·¶Î§
+%% è®¡ç®—é¢—ç²’è¿åŠ¨
+% % è½¬é€ŸèŒƒå›´
 % speeds = 10.^(1:4);
 % COMVars.colors = hsv(length(speeds));
-% ¿¼²éÊ±¼ä¿ç¶È
+% è€ƒæŸ¥æ—¶é—´è·¨åº¦
 tspan = [0,1200.0];
 % for i = 1:length(speeds)
 %     operation.Rotation.Speed = speeds(i);
@@ -54,7 +54,7 @@ tspan = [0,1200.0];
 %     [particles,outTab] = Trajectory(tspan,operation,particle,fluid,membrane);
 % end
 
-% ³õÊ¼Î»ÖÃ
+% åˆå§‹ä½ç½®
 pos = membrane.H/4*(0:3);
 COMVars.colors = hsv(length(pos));
 for i = 1:length(pos)
@@ -62,5 +62,5 @@ for i = 1:length(pos)
     [particles,outTab] = Trajectory(tspan,operation,particle,fluid,membrane);
 end
 
-%% Êä³ö
+%% è¾“å‡º
 
