@@ -21,14 +21,16 @@ end
 % 列表输出结果
 outTab = table(t,y(:,2),y(:,4),y(:,6),'VariableNames',{'time','Xz','Xr','Xtheta'});
 outTab = [outTab,table(y(:,1),y(:,3),y(:,5),'VariableNames',{'Vz','Vr','Vtheta'})];
+fprintf('初始位置为[%.3f %.3f %.3f]、',outTab.Xz(outTab.time == 0), ...
+    outTab.Xr(outTab.time == 0),outTab.Xtheta(outTab.time == 0))
 % 计算当前考查时间内颗粒是否脱离膜面并进而插值计算的脱离时间
 if max(y(:,2))>membrane.H
     % 插值计算要求查询序列为不重复的有理数（重复性要求放宽为不等于0）
     idx = (y(:,2) ~= 0 & ~isnan(y(:,2)) & ~isinf(y(:,2))); 
     rt = interp1(y(idx,2), t(idx), membrane.H);
-    fprintf('转速为%dRPM时颗粒滑出膜面经历的时间为%.3e秒！\n', operation.Rotation.Speed, rt)
+    fprintf('转速为%dRPM时，颗粒滑出膜面经历的时间为%.3e秒！\n', operation.Rotation.Speed, rt)
 else
-    fprintf('转速为%dRPM时在考查时间内颗粒未滑出膜面！\n', operation.Rotation.Speed)
+    fprintf('转速为%dRPM时，在考查时间内颗粒未滑出膜面！\n', operation.Rotation.Speed)
 end
 % 画出轨迹
 if isempty(findobj('Name','颗粒在膜面滑移的轨迹')) 
