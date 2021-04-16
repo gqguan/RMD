@@ -1,13 +1,14 @@
 function [particles,outTab] = Trajectory(tspan,operation,particle,fluid,membrane)
 global COMVars
 COMVars.colorID = COMVars.colorID+1;
-y0 = zeros(6,1); % z方向速度、z方向位置、r方向速度、r方向位置、theta方向速度、theta方向位置
+y0 = zeros(7,1); % z方向速度、z方向位置、r方向速度、r方向位置、theta方向速度、theta方向位置、颗粒体积
 y0(2) = particle.Position(1);
 y0(4) = particle.Position(2);
 y0(6) = particle.Position(3);
 y0(1) = particle.Velocity(1);
 y0(3) = particle.Velocity(2);
 y0(5) = particle.Velocity(3);
+y0(7) = particle.Volume;
 [t,y] = ode45(@(t,y) motionEq(t,y,operation,particle,fluid,membrane), tspan, y0);
 % 输出颗粒轨迹
 particles = struct;
@@ -77,6 +78,11 @@ function dy = motionEq(t,y,operation,particle,fluid,membrane)
     particle.Position = [y(2),y(4),y(6)];
     % 更新颗粒速度
     particle.Velocity = [y(1),y(3),y(5)];
+    % 更新颗粒体积（假定颗粒为正方体）
+    particle.Volume = y(7); % 体积（m3）
+    particle.Mass = particle.Density*particle.Volume; % 质量（kg）
+    particle.EqvSize = (particle.Volume/(4/3*pi))^(1/3); % 等体积球体半径（m）
+    particle.Interface = particle.Volume^(2/3); % 液固界面积（m2）
     % 计算颗粒受力
     force = CalcForce(operation,particle,fluid,membrane);
     m = particle.Mass;
@@ -87,4 +93,5 @@ function dy = motionEq(t,y,operation,particle,fluid,membrane)
     dy(4) = y(3);
     dy(5) = force(3)/m;
     dy(6) = y(5);
+    dy(7) = ParticleGrowth(particle,operation);
 end
