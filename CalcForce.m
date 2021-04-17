@@ -96,7 +96,7 @@ switch opString
                 FC(1) = FCmag*cos(alpha);
                 FC(2) = 0;
                 FC(3) = FCmag*sin(alpha);
-                prompt = sprintf('颗粒在膜面所受的实际摩擦力为%.4eN不小于最大静摩擦力%.4eN：', Fmag, Fmax);
+                prompt = sprintf('颗粒在膜面所受的实际摩擦力为%.4eN大于最大静摩擦力%.4eN：', Fmag, Fmax);
                 prompt = sprintf('%s颗粒在膜面所受的力为FC[%.4e %.4e %.4e]',prompt,FC);
                 prompt = sprintf('%s，颗粒在膜面运动，当前在膜面位置(%.4f,%.4f)！', prompt, particle.Position(3), particle.Position(1));
             end            
