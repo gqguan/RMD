@@ -1,14 +1,14 @@
 function [particles,outTab] = Trajectory(tspan,operation,particle,fluid,membrane)
 global COMVars
 COMVars.colorID = COMVars.colorID+1;
-y0 = zeros(7,1); % z方向速度、z方向位置、r方向速度、r方向位置、theta方向速度、theta方向位置、颗粒体积
-y0(2) = particle.Position(1);
-y0(4) = particle.Position(2);
-y0(6) = particle.Position(3);
-y0(1) = particle.Velocity(1);
-y0(3) = particle.Velocity(2);
-y0(5) = particle.Velocity(3);
-y0(7) = particle.Volume;
+y0 = zeros(7,1); 
+y0(2) = particle.Position(1); % z方向位置
+y0(4) = particle.Position(2); % r方向位置
+y0(6) = particle.Position(3); % theta方向位置
+y0(1) = particle.Velocity(1); % z方向速度
+y0(3) = particle.Velocity(2); % r方向速度
+y0(5) = particle.Velocity(3); % theta方向速度
+y0(7) = particle.Volume; % 颗粒体积
 [t,y] = ode45(@(t,y) motionEq(t,y,operation,particle,fluid,membrane), tspan, y0);
 % 输出颗粒轨迹
 particles = struct;
@@ -45,7 +45,7 @@ axis([-membrane.W/2, membrane.W/2, 0, membrane.H])
 xlabel('$\theta R$ (m)', 'interpreter', 'latex')
 ylabel('$z$ (m)', 'interpreter', 'latex')
 hold on
-legend;
+legend('Location','best');
 
 % 颗粒沿程受力变化
 FCs = arrayfun(@(x)CalcForce(operation,x,fluid,membrane),[particles.Spec],'UniformOutput',false);
@@ -74,6 +74,10 @@ ylabel('$F_{\theta}$ (N)','interpreter','latex')
 end
 
 function dy = motionEq(t,y,operation,particle,fluid,membrane)
+    % debugging
+    if any(isnan(y))
+        fprintf('【错误】非数值解！\n')
+    end
     % 更新颗粒位置
     particle.Position = [y(2),y(4),y(6)];
     % 更新颗粒速度
