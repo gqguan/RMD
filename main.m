@@ -8,7 +8,7 @@ global COMVars
 COMVars.colorID = 0;
 % 操作条件
 operation.Rotation.Radium = 10e-3; % 转筒半径（m）
-operation.Rotation.Speed = 50; % 转速（rpm）
+operation.Rotation.Speed = 20; % 转速（rpm）
 % operation.Rotation.AngularVelocity = operation.Rotation.Speed*2*pi/60; % 角速度（rad/s）
 operation.Inlet.Velocity = 0; % 进料流速（即z方向速度，m/s）
 operation.Z0 = 5e-2; 
@@ -55,7 +55,7 @@ tspan = [0,1200.0];
 % end
 
 % 初始位置
-pos = membrane.H/4*(0:3);
+pos = membrane.H/4*(3:3);
 COMVars.colors = hsv(length(pos));
 for i = 1:length(pos)
     particle.Position(1) = pos(i);
