@@ -47,7 +47,7 @@ membrane.W = 2*pi*operation.Rotation.Radium; % 膜面尺寸W
 % speeds = 10.^(1:4);
 % COMVars.colors = hsv(length(speeds));
 % 考查时间跨度
-tspan = [0,1];
+tspan = [0,180];
 % for i = 1:length(speeds)
 %     operation.Rotation.Speed = speeds(i);
 %     particle = InitParticle(operation,particle);

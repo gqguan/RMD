@@ -86,21 +86,14 @@ switch opString
             FC(3) = Ftheta; % 周向摩擦力为0
             prompt = sprintf('颗粒在离心力作用下脱离膜面，所受合力为FC[%.4e %.4e %.4e]',FC);
         else
-            % 当摩擦力小于最大静摩擦力时颗粒在旋转膜面保持相对静止，膜面与颗粒接触面的静摩擦力系数
-            if Fmag<Fmax
-                FC = [0,0,0];
-                prompt = sprintf('颗粒在膜面所受的实际摩擦力为%.4eN小于最大静摩擦力%.4eN：', Fmag, Fmax);
-                prompt = sprintf('%s颗粒在膜面所受的力为FC[%.4e %.4e %.4e]',prompt,FC);
-            else
-                % 合力 = 动摩擦力
-                FCmag = Fmag-membrane.KM*abs(Fn);
-                FC(1) = FCmag*cos(alpha);
-                FC(2) = 0;
-                FC(3) = FCmag*sin(alpha);
-                prompt = sprintf('颗粒在膜面所受的实际摩擦力为%.4eN大于最大静摩擦力%.4eN：', Fmag, Fmax);
-                prompt = sprintf('%s颗粒在膜面所受的力为FC[%.4e %.4e %.4e]',prompt,FC);
-                prompt = sprintf('%s，颗粒在膜面运动，当前在膜面位置(%.4f,%.4f)！', prompt, particle.Position(3), particle.Position(1));
-            end            
+            % 合力 - 动摩擦力
+            FCmag = Fmag-membrane.KM*abs(Fn);
+            FC(1) = FCmag*cos(alpha);
+            FC(2) = 0;
+            FC(3) = FCmag*sin(alpha);
+            prompt = sprintf('颗粒在膜面所受的实际摩擦力为%.4eN大于最大静摩擦力%.4eN：', Fmag, Fmax);
+            prompt = sprintf('%s颗粒在膜面所受的力为FC[%.4e %.4e %.4e]',prompt,FC);
+            prompt = sprintf('%s，颗粒在膜面运动，当前在膜面位置(%.4f,%.4f)！', prompt, particle.Position(3), particle.Position(1));         
         end
 end
 
