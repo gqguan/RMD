@@ -4,7 +4,8 @@
 
 clear
 N = 200000;
-t = zeros(4,1);
+t1 = zeros(2,1);
+t2 = zeros(2,1);
 prompt = string;
 
 %% 变量型对象计算
@@ -53,4 +54,4 @@ t2(2) = toc;
 disp('各变量在工作空间的存储量大小')
 whos p1 p2 p3 p4
 prompt = prompt';
-disp(table(prompt,t))
+disp(table(prompt,t1,t2))
