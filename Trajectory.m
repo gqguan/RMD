@@ -9,21 +9,27 @@ y0(1) = particle.Velocity(1); % z方向速度
 y0(3) = particle.Velocity(2); % r方向速度
 y0(5) = particle.Velocity(3); % theta方向速度
 y0(7) = particle.Volume; % 颗粒体积
-[t,y] = ode45(@(t,y) motionEq(t,y,operation,particle,fluid,membrane), tspan, y0);
+dydt = @(t,y) motionEq(t,y,operation,particle,fluid,membrane);
+[t,y] = ode15s(dydt, tspan, y0);
 % 输出颗粒轨迹
 particles = struct;
 for i = 1:length(t)
     particles(i).Time = t(i);
     particle.Position = [y(i,2),y(i,4),y(i,6)];
     particle.Velocity = [y(i,1),y(i,3),y(i,5)];
+    particle.Volume = y(i,7);
+    particle.Mass = particle.Density*particle.Volume; % 质量（kg）
+    particle.EqvSize = (particle.Volume/(4/3*pi))^(1/3); % 等体积球体半径（m）
+    particle.Interface = particle.Volume^(2/3); % 液固界面积（m2）
     particles(i).Spec = particle;
 end
 
 % 列表输出结果
 outTab = table(t,y(:,2),y(:,4),y(:,6),'VariableNames',{'time','Xz','Xr','Xtheta'});
 outTab = [outTab,table(y(:,1),y(:,3),y(:,5),'VariableNames',{'Vz','Vr','Vtheta'})];
+outTab = [outTab, table(y(:,7),'VariableNames',{'Volume'})];
 fprintf('初始位置为[%.3f %.3f %.3f]、',outTab.Xz(outTab.time == 0), ...
-    outTab.Xr(outTab.time == 0),outTab.Xtheta(outTab.time == 0))
+    outTab.Xr(outTab.time == 0), outTab.Xtheta(outTab.time == 0))
 % 计算当前考查时间内颗粒是否脱离膜面并进而插值计算的脱离时间
 if max(y(:,2))>membrane.H
     % 插值计算要求查询序列为不重复的有理数（重复性要求放宽为不等于0）
@@ -75,9 +81,10 @@ end
 
 function dy = motionEq(t,y,operation,particle,fluid,membrane)
     % debugging
-    if any(isnan(y))
-        fprintf('【错误】非数值解！\n')
-    end
+%     if any(isnan(y))
+%     if t>105
+%         fprintf('【错误】%.4f时刻有非数值解！\n',t)
+%     end
     % 更新颗粒位置
     particle.Position = [y(2),y(4),y(6)];
     % 更新颗粒速度

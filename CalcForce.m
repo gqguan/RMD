@@ -54,6 +54,7 @@ F4 = buoyancy([rho_l,rho_c,g,V]);
 Fz = -Fz1-F4;
 
 %% 根据程序计算设定字段分别计算
+FC = zeros(1,3);
 % 颗粒在膜面切方向受的合力大小及方向
 Fmag = sqrt(Ftheta^2+Fz^2);
 alpha = atan(Ftheta/Fz);
