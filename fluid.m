@@ -25,12 +25,7 @@ classdef fluid < handle
                 obj.Id = 'N/A';
             end
         end
-        
-        function outputArg = method1(obj,inputArg)
-            %METHOD1 此处显示有关此方法的摘要
-            %   此处显示详细说明
-            outputArg = obj.Property1 + inputArg;
-        end
+
     end
 end
 
