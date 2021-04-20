@@ -9,7 +9,7 @@ y0(1) = particle.Velocity(1);
 y0(3) = particle.Velocity(2);
 y0(5) = particle.Velocity(3);
 y0(7) = particle.Volume;
-[t,y] = ode45(@(t,y) motionEq(t,y,membrane,particle,fluid), tspan, y0);
+[t,y] = ode15s(@(t,y) motionEq(t,y,membrane,particle,fluid), tspan, y0);
 % Êä³ö¿ÅÁ£¹ì¼£
 particles = struct;
 for i = 1:length(t)

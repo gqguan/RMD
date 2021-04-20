@@ -6,9 +6,9 @@ classdef particle1 < handle
         Id = 'p1001';
         GeomForm = '正方体';
         Density = 2.165e3;
-        Volume = (10e-6)^3;
+        Volume = (10e-6)^3; % set.Volume时set属性Mass、Size和Interface
         Position = [0 0 0];
-        Velocity = [0 0 0];
+        Velocity = [0 0 0]; % set.Velocity时set属性Status
     end
     
     properties (SetAccess = private)

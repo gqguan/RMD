@@ -8,6 +8,7 @@ classdef membrane < handle
         KM = 1e-5; % 动摩擦力系数
         Radium = 20e-3; 
         Theta = 2*pi;
+        Z0 = 5e-2;
         Height = 40e-3; % 膜面尺寸H，单位：m
         Width = 2*pi*20e-3; % 膜面尺寸W，单位：m
         Velocity = [0,0,0];

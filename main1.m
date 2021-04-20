@@ -9,7 +9,7 @@ COMVars.colorID = 0;
 
 % 定义对象
 m1 = membrane('PVDF');
-p1 = particle('NaCl');
+p1 = particle1('NaCl');
 f1 = fluid('Water');
 
 % 初始条件
