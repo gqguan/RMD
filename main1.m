@@ -15,7 +15,7 @@ f1 = fluid('Water');
 % 初始条件
 m1.Z0 = 5e-2; % 膜面上缘距离液面的距离（m）
 m1.Radium = 10e-3; % 转筒半径（m）
-m1.Velocity = [0 0 50*2*pi*m1.Radium]; % 膜面旋转速度 Vtheta = 50rpm的线速度
+m1.Velocity = [0 0 50*2*pi*m1.Radium/60]; % 膜面旋转速度 Vtheta = 50rpm的线速度
 p1.Velocity = m1.Velocity; % 初始颗粒运动速度 = 膜面运动速度，即颗粒与膜面相对静止
 p1.Position = [m1.Z0,m1.Radium,0]+p1.Position;
 p1.Volume = (10e-6)^3; % 颗粒体积

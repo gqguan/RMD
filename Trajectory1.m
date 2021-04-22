@@ -89,5 +89,5 @@ function dy = motionEq(t,y,membrane,particle,fluid)
     dy(4) = y(3);
     dy(5) = force(3)/m;
     dy(6) = y(5);
-    dy(7) = 0;
+    dy(7) = ParticleGrowth(particle,membrane);
 end
