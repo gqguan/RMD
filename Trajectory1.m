@@ -1,6 +1,6 @@
 function [particles,outTab] = Trajectory1(tspan,membrane,particle,fluid)
-global COMVars
-COMVars.colorID = COMVars.colorID+1;
+% global COMVars
+% COMVars.colorID = COMVars.colorID+1;
 y0 = zeros(6,1); % z方向速度、z方向位置、r方向速度、r方向位置、theta方向速度、theta方向位置
 y0(2) = particle.Position(1);
 y0(4) = particle.Position(2);
@@ -32,15 +32,15 @@ outTab = [outTab,table(y(:,1),y(:,3),y(:,5),'VariableNames',{'Vz','Vr','Vtheta'}
 % else
 %     fprintf('转速为%dRPM时在考查时间内颗粒未滑出膜面！\n', operation.Rotation.Speed)
 % end
-% % 画出轨迹
+% 画出轨迹
 % if isempty(findobj('Name','颗粒在膜面滑移的轨迹')) 
 %     figure('name', '颗粒在膜面滑移的轨迹');
 % else
 %     figure(1);
 % end
-% plotName = sprintf('%dRPM',operation.Rotation.Speed);
+% plotName = sprintf('%dRPM',membrane.Velocity(3)/(2*pi*membrane.Radium/60));
 % plot(y(:,6),y(:,2),'ro','DisplayName',plotName,'Color',COMVars.colors(COMVars.colorID,:))
-% axis([-membrane.W/2, membrane.W/2, 0, membrane.H])
+% axis([-membrane.Width/2, membrane.Width/2, 0, membrane.Height])
 % xlabel('$\theta R$ (m)', 'interpreter', 'latex')
 % ylabel('$z$ (m)', 'interpreter', 'latex')
 % hold on

@@ -8,7 +8,7 @@ xg = membrane.Velocity(3)/(2*pi*membrane.Radium)*60;
 yg = particle.Position(1)-membrane.Z0; % 以膜面左上点为原点转换为膜面位置
 dd = interp2(RPM,Z,V,xg,yg,'spline'); % 颗粒尺寸（等球体积的直径），单位：m/s
 if dd < 0
-    warning('ParticleGrowth()计算得颗粒生长速率为负值，重置为零')
+%     warning('ParticleGrowth()计算得颗粒生长速率为负值，重置为零')
     dd = 0;
 end
 % 输出颗粒体积变化率，单位：m3/s
