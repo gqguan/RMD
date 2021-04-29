@@ -22,7 +22,7 @@ classdef particle1 < handle
         function obj = particle1(inputArg)
             % 构造颗粒对象，需指明该颗粒的识别号
             if exist('inputArg','var')
-                if isa(inputArg,'particle')
+                if isa(inputArg,'particle1')
                     obj = inputArg;
                 elseif ischar(inputArg)
                     obj.Id = inputArg;
@@ -30,7 +30,7 @@ classdef particle1 < handle
                     error('命名颗粒有误！'); 
                 end                         
             else
-                warning('未命名颗粒');
+%                 warning('未命名颗粒');
                 obj.Id = 'N/A';
             end
         end
@@ -112,6 +112,20 @@ classdef particle1 < handle
             end
         end
 
+        function copy = copyobj(obj)
+        % Create a shallow copy of the calling object.
+         copy = eval(class(obj));
+         meta = eval(['?',class(obj)]);
+         for p = 1: size(meta.Properties,1)
+             pname = meta.Properties{p}.Name;
+             try
+                 eval(['copy.',pname,' = obj.',pname,';']);
+             catch
+                 fprintf(['\nCould not copy ',pname,'.\n']);
+             end
+         end
+        end
+        
     end
 end
 

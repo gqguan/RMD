@@ -17,7 +17,7 @@ for i = 1:length(t)
     particle.Position = [y(i,2),y(i,4),y(i,6)];
     particle.Velocity = [y(i,1),y(i,3),y(i,5)];
     particle.Volume = y(i,7);
-    particles(i).Spec = particle;
+    particles(i).Spec = copyobj(particle);
 end
 
 % 列表输出结果

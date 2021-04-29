@@ -8,7 +8,7 @@ global COMVars
 COMVars.colorID = 1;
 COMVars.colors = hsv(1);
 
-% 定义对象
+%% 定义对象
 m1 = membrane('PVDF');
 p1 = particle1('NaCl');
 f1 = fluid('Water');
@@ -23,16 +23,20 @@ p1.Volume = (10e-6)^3; % 颗粒体积
 f1.Velocity = [0 0 0]; % 主流速度
 
 %% 计算颗粒运动变化
-tspan = [0 100];
+tspan = [0 700];
 % 计算颗粒运动轨迹（颗粒位置每秒记录一次）
+wbCtrl = waitbar(0,'初始化','Name','计算颗粒运动');
+Size = 0;
 outTab = table;
 if tspan(2) > 1
     for iTS = 1:floor(tspan(2))
         [p2s,tab2s] = Trajectory1([tspan(1)+iTS-1,tspan(1)+iTS],m1,p1,f1);
-        Particle = p2s(end).Spec; p1 = Particle;
-        outTab = [outTab;[tab2s(end,:),table(Particle)]];
+        Particle = p2s(end).Spec; p1 = Particle; Size = Particle.Size;
+        outTab = [outTab;[tab2s(end,:),table(Size),table(Particle)]];
+        waitbar(iTS/floor(tspan(2)),wbCtrl,sprintf('计算进度（已完成%.f%%）',iTS/floor(tspan(2))*100))
     end
 end
+close(wbCtrl)
 
 %% 画出轨迹
 % 在指定绘图对象中画轨迹
