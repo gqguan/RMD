@@ -47,10 +47,13 @@ Fn = Fc+F1+F2;
 %% 流体对颗粒的曳力（颗粒与流体相互作用）
 % 颗粒与流体的相对速度
 relV_FS = fluid.Velocity-particle.Velocity;
-if any(relV_FS) % 颗粒相对流体运动
+% 边界层修正的流体速度
+relV_FS1 = velocityBC(rc,2*R,relV_FS,fluid);
+
+if any(relV_FS1) % 颗粒相对流体运动
     h = 2*rc; % 流固作用特征长度（m） << 初设
     mu = fluid.Viscosity; % 流体黏度 << 按水黏度计
-    Fd = hydraulicForce(rc,h,relV_FS,mu);
+    Fd = hydraulicForce(rc,h,relV_FS1,mu);
 else
     Fd = [0 0 0];
 end
@@ -139,4 +142,20 @@ end
 % 转速单位变换
 function omega = rpm2omega(rpm)
     omega = rpm*2*pi/60;
+end
+
+% 边界层厚度
+function [Vcorr,Y] = velocityBC(l,d,Vf,fluid)
+    Vmag = 0;
+    for i = 1:length(Vf)
+        Vmag = Vf(i)*Vf(i)+Vmag;
+    end
+    Vmag = sqrt(Vmag);
+    Re = d*fluid.Density*Vmag/fluid.Viscosity; % 流体雷诺数
+    Y = 5.84*d/sqrt(Re); % 附壁边界层厚度
+    if l <= Y
+        Vcorr = l/Y*Vf; % 边界层内修正速度
+    else
+        Vcorr = Vf;
+    end
 end
