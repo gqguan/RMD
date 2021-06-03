@@ -68,9 +68,11 @@ Fg = buoyancy(rho_l,rho_c,g,V);
 % 根据颗粒与膜面的相对运动状态判定颗粒
 relV_SS = particle.Velocity-membrane.Velocity;
 if Fn < 0 
-    if any(relV_SS) % 颗粒相对膜面运动
+    if any(relV_SS) % 颗粒相对膜面运动      
         Ffmag = membrane.KM*abs(Fn); % 计算动摩擦力的大小
         Ff = -Ffmag*relV_SS./sqrt(relV_SS*relV_SS'); % 摩擦力方向为速度的反方向
+        argout.FrictionStatus = 'kinetic';
+        argout.FrictionForce = Ffmag;
     else % 颗粒相对膜面静止
         Ffmax = membrane.KS*abs(Fn); % 最大静摩擦力的大小
         Fmag = sqrt((Fd+Fg)*(Fd+Fg)'); % 曳力和重力的合力大小
@@ -80,6 +82,8 @@ if Fn < 0
         else
             Ff = -(Fd+Fg); % 摩擦力为曳力和重力合力的反作用力
         end
+        argout.FrictionStatus = 'static';
+        argout.FrictionForce = Ffmax;
     end
 else % 颗粒将从膜面甩离
     Ff = [0 0 0]; % 摩擦力为零
@@ -90,7 +94,7 @@ FC = Fd+Fg+Ff;
 % 结果参数集
 % argout.log = prompt;
 % argout.K = K;
-argout.F = table(F1,F2,Fc,Fn,Fd,Ff,Fg); % 范德华力、流体静压、离心力、颗粒法方向合力、流体曳力、摩擦力、浮力
+argout.F = table(F1,F2,Fc,Fn,Fd,Ff,Fg); % 范德华力、流体静压、离心力、颗粒法方向合力、流体曳力、摩擦力分力、浮力
 
 end
 
