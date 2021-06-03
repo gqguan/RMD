@@ -87,19 +87,19 @@ classdef particle1 < handle
             % 设置颗粒运动速度
             if isnumeric(inputArg) && isequal(size(inputArg),[1 3])
                 obj.Velocity = inputArg;
-                getStatus(obj);
+%                 getStatus(obj);
             else
                 error('无效“颗粒速度”指定！')
             end
         end
         
-        function obj = getStatus(obj)
-            if any(obj.Velocity)
-                obj.Status = 'Motional';
-            else
-                obj.Status = 'Static';
-            end
-        end
+%         function obj = getStatus(obj)
+%             if any(obj.Velocity)
+%                 obj.Status = 'Motional';
+%             else
+%                 obj.Status = 'Static';
+%             end
+%         end
         
         function obj = getOtherProps(obj)
             obj.Mass = obj.Density*obj.Volume;
