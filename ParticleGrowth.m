@@ -6,6 +6,7 @@ V = GD(:,2:7);
 %根据RPM与x得到对应生长速率
 xg = membrane.Velocity(3)/(2*pi*membrane.Radium)*60;
 yg = particle.Position(1)-membrane.Z0; % 以膜面左上点为原点转换为膜面位置
+de = particle.Size*2;
 if yg < min(Z) || yg > max(Z)
     dd = 0;
 else
@@ -16,4 +17,9 @@ else
     end
 end
 % 输出颗粒体积变化率，单位：m3/s
-dV = pi/6*dd^3; 
+dV = pi/2*de^2*dd; 
+% dV = pi/6*dd^3;
+
+% Naillon A, et al. http://dx.doi.org/10.1016/j.jcrysgro.2015.04.010
+% dL/dt = Kcr*(S-1)^gcr, where Kcr = Ccr*exp(-Ea/R/T), Ccr = 1.14e4 m/s, Ea =
+% 58180 J/mol, and gcr = 1
