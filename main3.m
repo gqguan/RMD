@@ -17,14 +17,15 @@ end
 NP = 500;
 mu = 0.85e-6; % 正方体颗粒边长（颗粒平均尺寸，米）
 sigma = 0.15*mu; % 颗粒标准差
-tspan = [0,5]; % 计算时间（秒）
+tend = 1;
+tspan = linspace(0,tend,100); % 计算时间（秒）
 
 %% 初始颗粒分布
 % 膜
 m = membrane('PVDF');
 m.Z0 = 5e-2; % 膜面上缘距离液面的距离（m）
 m.Radium = 20e-3; % 转筒半径（m）
-m.Velocity = [0 0 190*2*pi*m.Radium/60]; % 膜面旋转速度 Vtheta = 20rpm的线速度
+m.Velocity = [0 0 20*2*pi*m.Radium/60]; % 膜面旋转速度 Vtheta = 20rpm的线速度
 % 流体
 f = fluid('Water');
 f.Velocity = [0 0 0]; % 主流速度
@@ -103,7 +104,7 @@ histogram([out.SlipTime],'Normalization','probability')
 xlabel('Time (s)')
 ylabel('Probability')
 
-%%
+%% 计算颗粒滑出膜面的时间
 function st = slipTime(ps,m)
     % 输入参数校核
     if all(cellfun(@(x)any(strcmp(x,fieldnames(ps))),{'Time','Spec'}))
